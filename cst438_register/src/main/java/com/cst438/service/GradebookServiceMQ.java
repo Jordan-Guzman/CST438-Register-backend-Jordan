@@ -34,7 +34,8 @@ public class GradebookServiceMQ extends GradebookService {
 	public void enrollStudent(String student_email, String student_name, int course_id) {
 		 
 		//TODO  complete this method in homework 4
-		
+		EnrollmentDTO e = new EnrollmentDTO(student_email, student_name, course_id);
+		rabbitTemplate.convertAndSend(e);
 	}
 	
 	@RabbitListener(queues = "registration-queue")
@@ -42,7 +43,7 @@ public class GradebookServiceMQ extends GradebookService {
 	public void receive(CourseDTOG courseDTOG) {
 		
 		//TODO  complete this method in homework 4
-		
+		System.out.println("Message received " + courseDTOG);
 	}
 	
 	

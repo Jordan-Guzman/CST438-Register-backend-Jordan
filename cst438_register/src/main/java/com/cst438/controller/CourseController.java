@@ -1,15 +1,19 @@
 package com.cst438.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.cst438.domain.CourseDTOG;
 import com.cst438.domain.Enrollment;
 import com.cst438.domain.EnrollmentRepository;
+import com.cst438.domain.ScheduleDTO;
+import com.cst438.domain.Student;
 
 @RestController
 public class CourseController {
@@ -26,6 +30,20 @@ public class CourseController {
 		
 		//TODO  complete this method in homework 4
 		
+		/**
+		 * go into enrollment table
+		 * retrieve student enrollment entity object
+		 * update the grade
+		 * save it back into the enrollment repository
+		 */
+		CourseDTOG.GradeDTO gradeDTO = new CourseDTOG.GradeDTO();
+		Enrollment e = enrollmentRepository.findByEmailAndCourseId(gradeDTO.student_email, course_id);
+        e.setCourseGrade(gradeDTO.grade);
+        enrollmentRepository.save(e);
+        
+//		courseDTO.grades = 
+//        assignment.setName(assignmentDTO.assignmentName);
+//        assignmentRepository.save(assignment);
 	}
 
 }

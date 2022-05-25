@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
 import com.cst438.domain.EnrollmentDTO;
+import com.cst438.domain.StudentDTO;
 
 
 public class GradebookServiceREST extends GradebookService {
@@ -21,7 +22,8 @@ public class GradebookServiceREST extends GradebookService {
 	public void enrollStudent(String student_email, String student_name, int course_id) {
 		
 		//TODO  complete this method in homework 4
-		
+		EnrollmentDTO e = new EnrollmentDTO(student_email, student_name, course_id);
+		restTemplate.postForEntity(gradebook_url, e, EnrollmentDTO.class);
 	}
 
 }
