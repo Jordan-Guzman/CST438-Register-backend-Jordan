@@ -66,32 +66,34 @@ public class ScheduleController {
 	
 
 	
-	@PostMapping("/{studentID}")
+	@PostMapping("/schedule")
 	@Transactional
 	public ScheduleDTO.CourseDTO addCourse( @RequestBody ScheduleDTO.CourseDTO courseDTO  ) { 
-
+		System.out.println("JUST ENTERED ----------------------------------------");
 		String student_email = "test@csumb.edu";   // student's email 
 		
 		Student student = studentRepository.findByEmail(student_email);
 		Course course  = courseRepository.findById(courseDTO.course_id).orElse(null);
-		
+		System.out.println("CREATED OBJECTS ----------------------------");
 		// student.status
 		// = 0  ok to register
 		// != 0 hold on registration.  student.status may have reason for hold.
 		if (student!= null && course!=null && student.getStatusCode()==0) {
 			// TODO check that today's date is not past add deadline for the course.
+			System.out.println("STUDENT ABLE TO ENROLL --------------------------");
 			Enrollment enrollment = new Enrollment();
 			enrollment.setStudent(student);
 			enrollment.setCourse(course);
 			enrollment.setYear(course.getYear());
 			enrollment.setSemester(course.getSemester());
 			Enrollment savedEnrollment = enrollmentRepository.save(enrollment);
-			
-			gradebookService.enrollStudent(student_email, student.getName(), course.getCourse_id());
-			
+			System.out.println("ENROLLMENT SAVED ------------------");
+			gradebookService.enrollStudent(student.getEmail(), student.getName(), course.getCourse_id());
+			System.out.println("ENROLLED STUDENT --------------------------");
 			ScheduleDTO.CourseDTO result = createCourseDTO(savedEnrollment);
 			return result;
 		} else {
+			System.out.println("EXCEPTION THROWN -------------------------------------");
 			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Course_id invalid or student not allowed to register for the course.  "+courseDTO.course_id);
 		}
 		

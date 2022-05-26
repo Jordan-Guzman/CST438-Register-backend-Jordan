@@ -36,14 +36,15 @@ public class CourseController {
 		 * update the grade
 		 * save it back into the enrollment repository
 		 */
-		CourseDTOG.GradeDTO gradeDTO = new CourseDTOG.GradeDTO();
-		Enrollment e = enrollmentRepository.findByEmailAndCourseId(gradeDTO.student_email, course_id);
-        e.setCourseGrade(gradeDTO.grade);
-        enrollmentRepository.save(e);
+        System.out.println("GRADES " + courseDTO.grades);
+        for(CourseDTOG.GradeDTO g : courseDTO.grades) {
+        	String grade = g.grade;
+        	String student_email = g.student_email;
+        	Enrollment e = enrollmentRepository.findByEmailAndCourseId(student_email, course_id);
+        	e.setCourseGrade(grade);
+        	enrollmentRepository.save(e);
+        }
         
-//		courseDTO.grades = 
-//        assignment.setName(assignmentDTO.assignmentName);
-//        assignmentRepository.save(assignment);
 	}
 
 }
