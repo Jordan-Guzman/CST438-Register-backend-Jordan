@@ -35,7 +35,9 @@ public class GradebookServiceMQ extends GradebookService {
 		 
 		//TODO  complete this method in homework 4
 		EnrollmentDTO e = new EnrollmentDTO(student_email, student_name, course_id);
-		rabbitTemplate.convertAndSend(e);
+		System.out.println("Sending rabbitmq message: " + e);
+        rabbitTemplate.convertAndSend(gradebookQueue.getName(), e);
+        System.out.println("Message sent.");
 	}
 	
 	@RabbitListener(queues = "registration-queue")
@@ -44,8 +46,13 @@ public class GradebookServiceMQ extends GradebookService {
 		
 		//TODO  complete this method in homework 4
 		System.out.println("Message received " + courseDTOG);
+		System.out.println("GRADES " + courseDTOG.grades);
+		for(CourseDTOG.GradeDTO g : courseDTOG.grades) {
+			String grade = g.grade;
+	        String student_email = g.student_email;
+	        Enrollment e = enrollmentRepository.findByEmailAndCourseId(student_email, courseDTOG.course_id);
+	        e.setCourseGrade(grade);
+	        enrollmentRepository.save(e);
+		}
 	}
-	
-	
-
 }

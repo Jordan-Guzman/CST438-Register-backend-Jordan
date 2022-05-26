@@ -29,13 +29,7 @@ public class CourseController {
 	public void updateCourseGrades( @RequestBody CourseDTOG courseDTO, @PathVariable("course_id") int course_id) {
 		
 		//TODO  complete this method in homework 4
-		
-		/**
-		 * go into enrollment table
-		 * retrieve student enrollment entity object
-		 * update the grade
-		 * save it back into the enrollment repository
-		 */
+
         System.out.println("GRADES " + courseDTO.grades);
         for(CourseDTOG.GradeDTO g : courseDTO.grades) {
         	String grade = g.grade;
