@@ -2,8 +2,8 @@ package com.cst438;
 
 import static org.mockito.ArgumentMatchers.any;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
@@ -129,7 +129,7 @@ public class JunitTestStudent {
 		if(studentDTO.student_id == TEST_STUDENT_ID) {
 			found = true;
 		}
-		assertTrue("Added student not found.", found);
+		assertEquals(true, found);
 		
 		// verify that repository find method was called.
 		verify(studentRepository, times(1)).findById(TEST_STUDENT_ID);

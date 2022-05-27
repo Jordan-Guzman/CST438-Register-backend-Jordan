@@ -36,3 +36,5 @@ public class Cst4380wRegistrationApplication  {
 	}
 
 }
+
+// Heroku URL: https://cst438-register-be-guzman.herokuapp.com/
