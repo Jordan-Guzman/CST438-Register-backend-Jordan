@@ -6,11 +6,16 @@ public class StudentDTO {
 	public String email;
 	public String status;
 	public int status_code;
+//	public int course_id;
 	
 	@Override
 	public String toString() {
-		return "StudentDTO [student_id=" + student_id + "name=" + name + "email" + email + "]";
+		return "StudentDTO [student_id=" + student_id + "name=" + name + "email=" + email + "]";
 	}
+	
+//	public String toString() {
+//		return "StudentDTO [student_id=" + student_id + "name=" + name + "email=" + email + "course_id=" + course_id + "]";
+//	}
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -43,6 +48,11 @@ public class StudentDTO {
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
+//		if (course_id == 0) {
+//			if (other.course_id == 0)
+//				return false;
+//		} else if (course_id != other.course_id)
+//			return false;
 		return true;
 	}
 }
