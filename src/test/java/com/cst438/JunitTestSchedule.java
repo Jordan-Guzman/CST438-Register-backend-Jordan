@@ -4,7 +4,6 @@ import static org.mockito.ArgumentMatchers.any;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.List;
