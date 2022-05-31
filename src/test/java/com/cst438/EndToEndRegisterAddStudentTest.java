@@ -51,7 +51,7 @@ public class EndToEndRegisterAddStudentTest {
 		Student x = null;
 		
 		do {
-			x = studentRepository.findById(TEST_STUDENT_ID);
+			x = studentRepository.findByEmail(TEST_STUDENT_EMAIL);
 			if (x != null)
 				studentRepository.delete(x);
 		} while (x != null);
@@ -88,19 +88,19 @@ public class EndToEndRegisterAddStudentTest {
 			* verify that new student shows in student table in database.
 			*/ 
 			boolean found = false;
-			Student student = studentRepository.findById(TEST_STUDENT_ID);
-			if((student.getName() == TEST_STUDENT_NAME) && (student.getEmail() == TEST_STUDENT_EMAIL)) {
+			Student student = studentRepository.findByEmail(TEST_STUDENT_EMAIL);
+			System.out.print("--------------STUDENT EMAIL: " + student.getEmail() + "-----------------------");
+			if((student.getEmail().equals(TEST_STUDENT_EMAIL))) {
 				found = true;
 			}
 			assertTrue(found, "Student added but not listed in the schedule");
-			Student s = studentRepository.findById(TEST_STUDENT_ID);
-			assertNotNull(s, "Student not found in database");
+			assertNotNull(student, "Student not found in database");
 		} catch (Exception ex) {
 			throw ex;
 		} finally {
 			
 			// clean up database
-			Student s = studentRepository.findById(TEST_STUDENT_ID);
+			Student s = studentRepository.findByEmail(TEST_STUDENT_EMAIL);
 			if(s != null)
 				studentRepository.delete(s);
 			
