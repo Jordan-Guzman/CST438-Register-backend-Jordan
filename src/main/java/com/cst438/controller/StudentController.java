@@ -85,6 +85,25 @@ public class StudentController {
 		}
 	}
 	
+	
+	@DeleteMapping("/student/{student_id}")
+	@Transactional
+	public void deleteStudent(  @PathVariable int student_id  ) {
+		
+		String student_email = "test@csumb.edu";   // student's email 
+		
+		Student student = studentRepository.findById(student_id);
+		
+		// verify that student is enrolled in the course.
+		if (student!=null && student.getEmail().equals(student_email)) {
+			// OK.  drop the course.
+			 studentRepository.delete(student);
+		} else {
+			// something is not right with the enrollment.  
+			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Enrollment_id invalid. "+student_id);
+		}
+	}
+	
 	private StudentDTO createStudentDTO(Student s) {
 		StudentDTO studentDTO = new StudentDTO();
 		studentDTO.student_id = s.getStudent_id();
