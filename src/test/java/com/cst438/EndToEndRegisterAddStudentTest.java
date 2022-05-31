@@ -28,11 +28,11 @@ public class EndToEndRegisterAddStudentTest {
 	
 	public static final String CHROME_DRIVER_FILE_LOCATION = "C:/chromedriver_win32/chromedriver.exe";
 	
-	public static final String URL = "http://localhost:3000";
+	public static final String URL = "https://cst438-register-fe-guzman.herokuapp.com";
 	
 	public static final int TEST_STUDENT_ID = 3;
 	
-	public static final String TEST_STUDENT_NAME = "test student";
+	public static final String TEST_STUDENT_NAME = "test_student_1";
 	
 	public static final String TEST_STUDENT_EMAIL = "testing@student.test";
 	
@@ -74,13 +74,13 @@ public class EndToEndRegisterAddStudentTest {
 			Thread.sleep(SLEEP_DURATION);
 			
 			// Locate and click "Add Student" button
-			driver.findElement(By.xpath("//button[@id='main_add_student']"));
+			driver.findElement(By.xpath("//button[@id='main_add_student']")).click();
 			Thread.sleep(SLEEP_DURATION);
 			
 			// Enter student name, student email, and click add button
-			driver.findElement(By.xpath("//input[@name='name']")).sendKeys(TEST_STUDENT_NAME);
-			driver.findElement(By.xpath("//input[@name='email']")).sendKeys(TEST_STUDENT_EMAIL);
-			driver.findElement(By.xpath("//button[@id=add_student]")).click();
+			driver.findElement(By.xpath("//input[@type='text' and @name='name']")).sendKeys(TEST_STUDENT_NAME);
+			driver.findElement(By.xpath("//input[@type='text' and @name='email']")).sendKeys(TEST_STUDENT_EMAIL);
+			driver.findElement(By.xpath("//button[@id='add_student']")).click();
 			Thread.sleep(SLEEP_DURATION);
 			
 			
@@ -89,7 +89,7 @@ public class EndToEndRegisterAddStudentTest {
 			*/ 
 			boolean found = false;
 			Student student = studentRepository.findById(TEST_STUDENT_ID);
-			if(student.getName() == student.getEmail()) {
+			if((student.getName() == TEST_STUDENT_NAME) && (student.getEmail() == TEST_STUDENT_EMAIL)) {
 				found = true;
 			}
 			assertTrue(found, "Student added but not listed in the schedule");
@@ -101,6 +101,10 @@ public class EndToEndRegisterAddStudentTest {
 			
 			// clean up database
 			Student s = studentRepository.findById(TEST_STUDENT_ID);
+			if(s != null)
+				studentRepository.delete(s);
+			
+			driver.quit();
 		}
 	}
 }

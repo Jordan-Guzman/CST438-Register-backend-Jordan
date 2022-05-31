@@ -40,7 +40,7 @@ public class EndToEndScheduleTest {
 
 	public static final String CHROME_DRIVER_FILE_LOCATION = "C:/chromedriver_win32/chromedriver.exe";
 
-	public static final String URL = "http://localhost:3000";
+	public static final String URL = "https://cst438-register-fe-guzman.herokuapp.com";
 
 	public static final String TEST_USER_EMAIL = "test@csumb.edu";
 
