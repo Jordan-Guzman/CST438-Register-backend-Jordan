@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -88,9 +90,9 @@ public class StudentController {
 	
 	@DeleteMapping("/student/{student_id}")
 	@Transactional
-	public void deleteStudent(  @PathVariable int student_id  ) {
+	public void deleteStudent(  @PathVariable int student_id, @AuthenticationPrincipal OAuth2User principal  ) {
 		
-		String student_email = "test@csumb.edu";   // student's email 
+		String student_email = principal.getAttribute("email");   // student's email 
 		
 		Student student = studentRepository.findById(student_id);
 		
