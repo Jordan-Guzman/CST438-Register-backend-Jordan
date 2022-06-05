@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,17 +42,18 @@ public class ScheduleController {
 	@Autowired
 	EnrollmentRepository enrollmentRepository;
 	
-	@Autowired
-	GradebookService gradebookService;
+//	@Autowired
+//	GradebookService gradebookService;
 	
 	
 	/*
 	 * get current schedule for student.
 	 */
 	@GetMapping("/schedule")
-	public ScheduleDTO getSchedule( @RequestParam("year") int year, @RequestParam("semester") String semester ) {
+	public ScheduleDTO getSchedule( @RequestParam("year") int year, @RequestParam("semester") String semester, @AuthenticationPrincipal OAuth2User principal ) {
 		System.out.println("/schedule called.");
-		String student_email = "test@csumb.edu";   // student's email 
+		String student_email = principal.getAttribute("email");   // student's email 
+		String name = principal.getAttribute("name");
 		
 		Student student = studentRepository.findByEmail(student_email);
 		if (student != null) {
@@ -68,8 +71,8 @@ public class ScheduleController {
 	
 	@PostMapping("/schedule")
 	@Transactional
-	public ScheduleDTO.CourseDTO addCourse( @RequestBody ScheduleDTO.CourseDTO courseDTO  ) { 
-		String student_email = "test@csumb.edu";   // student's email 
+	public ScheduleDTO.CourseDTO addCourse( @RequestBody ScheduleDTO.CourseDTO courseDTO, @AuthenticationPrincipal OAuth2User principal  ) { 
+		String student_email = principal.getAttribute("email");   // student's email 
 		
 		Student student = studentRepository.findByEmail(student_email);
 		Course course  = courseRepository.findById(courseDTO.course_id).orElse(null);
@@ -84,7 +87,7 @@ public class ScheduleController {
 			enrollment.setYear(course.getYear());
 			enrollment.setSemester(course.getSemester());
 			Enrollment savedEnrollment = enrollmentRepository.save(enrollment);
-			gradebookService.enrollStudent(student.getEmail(), student.getName(), course.getCourse_id());
+//			gradebookService.enrollStudent(student.getEmail(), student.getName(), course.getCourse_id());
 			ScheduleDTO.CourseDTO result = createCourseDTO(savedEnrollment);
 			return result;
 		} else {
@@ -97,9 +100,9 @@ public class ScheduleController {
 	
 	@DeleteMapping("/schedule/{enrollment_id}")
 	@Transactional
-	public void dropCourse(  @PathVariable int enrollment_id  ) {
+	public void dropCourse(  @PathVariable int enrollment_id, @AuthenticationPrincipal OAuth2User principal  ) {
 		
-		String student_email = "test@csumb.edu";   // student's email 
+		String student_email = principal.getAttribute("email");   // student's email 
 		
 		// TODO  check that today's date is not past deadline to drop course.
 		
