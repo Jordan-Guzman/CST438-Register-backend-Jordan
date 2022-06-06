@@ -18,8 +18,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.cst438.service.GradebookService;
-//import com.cst438.service.GradebookServiceMQ;
-//import com.cst438.service.GradebookServiceREST;
+import com.cst438.service.GradebookServiceMQ;
+import com.cst438.service.GradebookServiceREST;
 
 @SpringBootApplication
 @EnableWebSecurity
@@ -68,6 +68,7 @@ public class Cst4380wRegistrationApplication  extends WebSecurityConfigurerAdapt
 	public GradebookService gradebookDefault() {
 		return new GradebookService();
 	}
+
 }
 
 
