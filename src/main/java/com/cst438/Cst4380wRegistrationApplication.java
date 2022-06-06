@@ -110,5 +110,3 @@ public class Cst4380wRegistrationApplication  extends WebSecurityConfigurerAdapt
 //	}
 //
 //}
-
-// Heroku URL: https://cst438-register-be-guzman.herokuapp.com/
