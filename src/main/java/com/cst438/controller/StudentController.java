@@ -37,74 +37,78 @@ public class StudentController {
 	StudentRepository studentRepository;
 	
 	@GetMapping("/student")
-	public StudentDTO getStudent( @RequestParam("id") int id ) {
+	public StudentDTO getStudent( @RequestParam("id") int id, @AuthenticationPrincipal OAuth2User principal ) {
 		
-		Student student = studentRepository.findById(id);
-	
+		String student_email = principal.getAttribute("email");   // student's email 
+		
+		Student student = studentRepository.findByEmail(student_email);
+		
 		if (student != null) {
 			System.out.println(student.toString());
 			return createStudentDTO(student);
 		} else {
+			System.out.println("/student student not found. "+student_email);
 			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student not found. " );
 		}
-	}
-	
-	
-	
-	@PostMapping("/student")
-	@Transactional
-	public StudentDTO addStudent( @RequestBody StudentDTO studentDTO) {
-
-		Student studentCreds = studentRepository.findByEmail(studentDTO.email);
-		
-		if (studentCreds == null) {
-			Student student = new Student();
-			student.setName(studentDTO.name);
-			student.setEmail(studentDTO.email);
-			Student savedStudent = studentRepository.save(student);
-			StudentDTO result = createStudentDTO(savedStudent);
-			return result;
-		} else {
-			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student already exists.  ");
-		}
 		
 	}
 	
 	
 	
-	@PutMapping("/student/{student_id}")
-	@Transactional
-	public void updateStatus( @PathVariable int student_id, @RequestBody StudentDTO studentDTO ) {
-		
-		Student student = studentRepository.findById(student_id);
-		
-		if(student != null) {
-			student.setStatusCode(studentDTO.status_code);
-			studentRepository.save(student);
-		}
-		else {
-			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student ID does not exist. " + student_id);
-		}
-	}
+//	@PostMapping("/student")
+//	@Transactional
+//	public StudentDTO addStudent( @RequestBody StudentDTO studentDTO) {
+//
+//		Student studentCreds = studentRepository.findByEmail(studentDTO.email);
+//		
+//		if (studentCreds == null) {
+//			Student student = new Student();
+//			student.setName(studentDTO.name);
+//			student.setEmail(studentDTO.email);
+//			Student savedStudent = studentRepository.save(student);
+//			StudentDTO result = createStudentDTO(savedStudent);
+//			return result;
+//		} else {
+//			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student already exists.  ");
+//		}
+//		
+//	}
 	
 	
-	@DeleteMapping("/student/{student_id}")
-	@Transactional
-	public void deleteStudent(  @PathVariable int student_id, @AuthenticationPrincipal OAuth2User principal  ) {
-		
-		String student_email = principal.getAttribute("email");   // student's email 
-		
-		Student student = studentRepository.findById(student_id);
-		
-		// verify that student is enrolled in the course.
-		if (student!=null && student.getEmail().equals(student_email)) {
-			// OK.  drop the course.
-			 studentRepository.delete(student);
-		} else {
-			// something is not right with the enrollment.  
-			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Enrollment_id invalid. "+student_id);
-		}
-	}
+	
+//	@PutMapping("/student/{student_id}")
+//	@Transactional
+//	public void updateStatus( @PathVariable int student_id, @RequestBody StudentDTO studentDTO ) {
+//		
+//		Student student = studentRepository.findById(student_id);
+//		
+//		if(student != null) {
+//			student.setStatusCode(studentDTO.status_code);
+//			studentRepository.save(student);
+//		}
+//		else {
+//			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student ID does not exist. " + student_id);
+//		}
+//	}
+	
+	
+//	@DeleteMapping("/student/{student_id}")
+//	@Transactional
+//	public void deleteStudent(  @PathVariable int student_id, @AuthenticationPrincipal OAuth2User principal  ) {
+//		
+//		String student_email = principal.getAttribute("email");   // student's email 
+//		
+//		Student student = studentRepository.findById(student_id);
+//		
+//		// verify that student is enrolled in the course.
+//		if (student!=null && student.getEmail().equals(student_email)) {
+//			// OK.  drop the course.
+//			 studentRepository.delete(student);
+//		} else {
+//			// something is not right with the enrollment.  
+//			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Enrollment_id invalid. "+student_id);
+//		}
+//	}
 	
 	private StudentDTO createStudentDTO(Student s) {
 		StudentDTO studentDTO = new StudentDTO();

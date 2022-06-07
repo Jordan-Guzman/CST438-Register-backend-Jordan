@@ -9,12 +9,6 @@ public class AdminDTO {
 	public int admin_id;
 	public String name;
 	public String email;
-	
-	public AdminDTO(int id, String name, String email) {
-		this.admin_id = id;
-		this.name = name;
-		this.email = email;
-	}
 
 	@Override
 	public String toString() {

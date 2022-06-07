@@ -17,27 +17,27 @@ public class Admin {
 		super();
 	}
 	
-	public int getId() {
+	public int getAdminId() {
 		return admin_id;
 	}
 	
-	public void setId(int admin_id) {
+	public void setAdminId(int admin_id) {
 		this.admin_id = admin_id;
 	}
 	
-	public String getName() {
+	public String getAdminName() {
 		return name;
 	}
 	
-	public void setName(String name) {
+	public void setAdminName(String name) {
 		this.name = name;
 	}
 	
-	public String getEmail() {
+	public String getAdminEmail() {
 		return email;
 	}
 	
-	public void setEmail(String email) {
+	public void setAdminEmail(String email) {
 		this.email = email;
 	}
 
